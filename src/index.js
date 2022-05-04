@@ -31,3 +31,8 @@ keyboard();
 const keysLayout = keysData.eng;
 const keysWrapper = document.querySelector('.keys-wrapper');
 renderKeys(keysWrapper, keysLayout);
+
+document.addEventListener('keydown', (e) => {
+  console.log('#### key code => ', e.code);
+  console.log('#### key Key => ', e.key);
+});
