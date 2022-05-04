@@ -3,8 +3,8 @@
 
 // @import "vendors/bootstrap";
 
+@import "base/normalize";
 @import "base/reset";
-@import "~normalize.css";
 @import "base/typography";
 
 // @import "layout/navigation";
@@ -14,7 +14,7 @@
 // @import "layout/sidebar";
 // @import "layout/forms";
 
-// @import "components/buttons";
+@import "components/keyBtn";
 // @import "components/carousel";
 // @import "components/cover";
 // @import "components/dropdown";
