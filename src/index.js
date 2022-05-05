@@ -21,7 +21,9 @@ const renderKeys = (targetEl, arrKeys) => {
 const keyboard = () => {
   const root = document.querySelector('#root');
   const container = createEl('div', ['container'], {});
+  const keyTable = createEl('textarea', ['textOut'], {});
   const keyWrapper = createEl('div', ['keys-wrapper', 'row'], {});
+  container.append(keyTable);
   container.append(keyWrapper);
   root.append(container);
 };
@@ -35,9 +37,11 @@ renderKeys(keysWrapper, keysLayout);
 document.addEventListener('keydown', (e) => {
   console.log('#### key code => ', e.code);
   console.log('#### key Key => ', e.key);
+  const tablo = document.querySelector('.textOut');
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
   choosen[0].classList.add('active');
+  tablo.textContent += e.key;
   console.log(choosen);
 });
 
