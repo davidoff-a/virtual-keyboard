@@ -33,16 +33,35 @@ keyboard();
 const keysLayout = keysData.eng;
 const keysWrapper = document.querySelector('.keys-wrapper');
 renderKeys(keysWrapper, keysLayout);
+const association = {
+  Tab: '   ',
+  CapsLock: '',
+  ShiftRight: '',
+  ShiftLeft: '',
+  ControlRight: '',
+  ControlLeft: '',
+  AltRight: '',
+  AltLeft: '',
+  MetaLeft: '',
+  MetaRight: '',
+};
 
 document.addEventListener('keydown', (e) => {
+  e.preventDefault();
   console.log('#### key code => ', e.code);
   console.log('#### key Key => ', e.key);
   const tablo = document.querySelector('.textOut');
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
+  console.log('#####: does element exist?', association[e.code]);
+
+  if (association[e.code] !== undefined) {
+    console.log('#####: element outputs =>', association[e.code]);
+    tablo.textContent += association[e.code];
+  } else {
+    tablo.textContent += e.key;
+  }
   choosen[0].classList.add('active');
-  tablo.textContent += e.key;
-  console.log(choosen);
 });
 
 document.addEventListener('keyup', (e) => {
