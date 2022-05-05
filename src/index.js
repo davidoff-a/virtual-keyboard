@@ -12,7 +12,7 @@ const createEl = (tagSelector, arrClasses, objAtribs) => {
 
 const renderKeys = (targetEl, arrKeys) => {
   arrKeys.forEach((key) => {
-    const el = createEl('div', ['button', ...key.label], {});
+    const el = createEl('div', ['button', ...key.label], { 'data-code': key.code });
     el.textContent = key.mainValue;
     targetEl.append(el);
   });
@@ -35,4 +35,14 @@ renderKeys(keysWrapper, keysLayout);
 document.addEventListener('keydown', (e) => {
   console.log('#### key code => ', e.code);
   console.log('#### key Key => ', e.key);
+  const buttons = document.querySelectorAll('.button');
+  const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
+  choosen[0].classList.add('active');
+  console.log(choosen);
+});
+
+document.addEventListener('keyup', (e) => {
+  const buttons = document.querySelectorAll('.button');
+  const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
+  choosen[0].classList.remove('active');
 });
