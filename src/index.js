@@ -12,8 +12,8 @@ const createEl = (tagSelector, arrClasses, objAtribs) => {
 
 const renderKeys = (targetEl, arrKeys) => {
   arrKeys.forEach((key) => {
-    const el = createEl('div', ['button', ...key.label], { 'data-code': key.code });
-    el.textContent = key.mainValue;
+    const el = createEl('div', ['button', ...key.classes], { 'data-code': key.code });
+    el.textContent = key.label;
     targetEl.append(el);
   });
 };
@@ -47,7 +47,6 @@ const association = {
 };
 
 document.addEventListener('keydown', (e) => {
-  e.preventDefault();
   console.log('#### key code => ', e.code);
   console.log('#### key Key => ', e.key);
   const tablo = document.querySelector('.textOut');
@@ -55,11 +54,13 @@ document.addEventListener('keydown', (e) => {
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
   console.log('#####: does element exist?', association[e.code]);
 
-  if (association[e.code] !== undefined) {
+  if (keysLayout[e.code] !== undefined) {
     console.log('#####: element outputs =>', association[e.code]);
     tablo.textContent += association[e.code];
+    tablo.focus();
   } else {
     tablo.textContent += e.key;
+    tablo.focus();
   }
   choosen[0].classList.add('active');
 });
