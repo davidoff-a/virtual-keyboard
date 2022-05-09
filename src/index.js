@@ -49,18 +49,22 @@ const association = {
 const tablo = document.querySelector('.textOut');
 
 document.addEventListener('keydown', (e) => {
-  console.log('#### key code => ', e.code);
-  console.log('#### key Key => ', e.key);
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
-  console.log('#####: does element exist?', association[e.code]);
 
   if (e.code === 'Tab') {
     if (tablo) {
-      tablo.value += association[e.code];
+      tablo.value += '  ';
       tablo.focus();
     }
     e.preventDefault();
+  }
+  if (e.key === 'Shift') {
+    [...buttons].forEach((btn) => {
+      const keyCode = btn.getAttribute('data-code');
+      const keyToChange = keysLayout.filter((key) => key.code === keyCode);
+      btn.textContent = keyToChange[0].optValue1 ? keyToChange[0].optValue1 : keyToChange[0].label;
+    });
   }
   if (association[e.code] !== undefined) {
     console.log('#####: element outputs =>', association[e.code]);
@@ -77,5 +81,13 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('keyup', (e) => {
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
+  if (e.key === 'Shift') {
+    const btns = document.querySelectorAll('.button');
+    [...btns].forEach((btn) => {
+      const keyCode = btn.getAttribute('data-code');
+      const keyToChange = keysLayout.filter((key) => key.code === keyCode);
+      btn.textContent = keyToChange[0].label;
+    });
+  }
   choosen[0].classList.remove('active');
 });
