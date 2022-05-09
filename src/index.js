@@ -46,22 +46,31 @@ const association = {
   MetaRight: '',
 };
 
+const tablo = document.querySelector('.textOut');
+
 document.addEventListener('keydown', (e) => {
   console.log('#### key code => ', e.code);
   console.log('#### key Key => ', e.key);
-  const tablo = document.querySelector('.textOut');
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
   console.log('#####: does element exist?', association[e.code]);
 
-  if (keysLayout[e.code] !== undefined) {
-    console.log('#####: element outputs =>', association[e.code]);
-    tablo.textContent += association[e.code];
-    tablo.focus();
-  } else {
-    tablo.textContent += e.key;
-    tablo.focus();
+  if (e.code === 'Tab') {
+    if (tablo) {
+      tablo.value += association[e.code];
+      tablo.focus();
+    }
+    e.preventDefault();
   }
+  if (association[e.code] !== undefined) {
+    console.log('#####: element outputs =>', association[e.code]);
+    if (tablo) {
+      tablo.textContent += association[e.code];
+    }
+  } else if (tablo) {
+    tablo.textContent += e.key;
+  }
+
   choosen[0].classList.add('active');
 });
 
