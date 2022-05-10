@@ -14,9 +14,6 @@ let capsMode;
 
 const renderKeys = (targetEl, arrKeys) => {
   targetEl.innerHTML = '';
-  // if (e) {
-  //   capsMode = e.getModifierState('CapsLock');
-  // }
   arrKeys.forEach((key) => {
     const el = createEl('div', ['button', ...key.classes], { 'data-code': key.code });
     if (key.optValue1) {
