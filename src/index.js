@@ -1,14 +1,6 @@
 import './scss/main.scss';
 import keysData from './assets/json/keys.json';
-
-const createEl = (tagSelector, arrClasses, objAtribs) => {
-  const tagEl = document.createElement(tagSelector);
-  tagEl.classList.add(...arrClasses);
-  if (Object.entries(objAtribs).length) {
-    Object.entries(objAtribs).forEach((attrib) => tagEl.setAttribute(attrib[0], attrib[1]));
-  }
-  return tagEl;
-};
+import { createEl, keyboard } from './js/common';
 
 let capsMode;
 
@@ -29,21 +21,14 @@ const renderKeys = (targetEl, arrKeys) => {
   });
 };
 
-const keyboard = () => {
-  const root = document.querySelector('#root');
-  const container = createEl('div', ['container'], {});
-  const keyTable = createEl('textarea', ['textOut'], {});
-  const keyWrapper = createEl('div', ['keys-wrapper', 'row'], {});
-  container.append(keyTable);
-  container.append(keyWrapper);
-  root.append(container);
-};
-
 keyboard();
-
-let keysLayout = keysData.eng;
+const language = window.localStorage.getItem('language');
+console.table(language);
+let keysLayout = JSON.parse(language) || keysData.eng;
+console.log(keysLayout);
 const keysWrapper = document.querySelector('.keys-wrapper');
 renderKeys(keysWrapper, keysLayout);
+
 const association = {
   Tab: '   ',
   CapsLock: '',
@@ -104,6 +89,7 @@ function handleKeyDown(e) {
   }
   if (e.altKey && e.shiftKey) {
     keysLayout = keysLayout === keysData.eng ? keysData.ru : keysData.eng;
+    window.localStorage.setItem('language', JSON.stringify(keysLayout));
     renderKeys(keysWrapper, keysLayout);
   }
 }
@@ -133,20 +119,24 @@ document.addEventListener('keyup', (e) => {
   handleKeyUp(e);
 });
 
+const mouseEventHandler = (e, eventType) => {
+  const { target } = e;
+  if (target && target.classList.contains('button')) {
+    const eCode = target.getAttribute('data-code');
+    const eKey = keysLayout.filter((item) => item.code === eCode)[0].label;
+    handleKeyDown(new KeyboardEvent(`${eventType}`, { code: eCode, key: eKey }));
+  }
+};
 document.addEventListener('mousedown', (e) => {
-  const { target } = e;
-  if (target && target.classList.contains('button')) {
-    const eCode = target.getAttribute('data-code');
-    const eKey = keysLayout.filter((item) => item.code === eCode)[0].label;
-    handleKeyDown(new KeyboardEvent('keydown', { code: eCode, key: eKey }));
-  }
+  mouseEventHandler(e, 'keydown');
 });
-
+// TODO: method mouseup doesn't work. It works like method keydown
 document.addEventListener('mouseup', (e) => {
-  const { target } = e;
-  if (target && target.classList.contains('button')) {
-    const eCode = target.getAttribute('data-code');
-    const eKey = keysLayout.filter((item) => item.code === eCode)[0].label;
-    handleKeyUp(new KeyboardEvent('keyup', { code: eCode, key: eKey }));
-  }
+  // const { target } = e;
+  // if (target && target.classList.contains('button')) {
+  //   const eCode = target.getAttribute('data-code');
+  //   const eKey = keysLayout.filter((item) => item.code === eCode)[0].label;
+  //   handleKeyUp(new KeyboardEvent('keyup', { code: eCode, key: eKey }));
+  // }
+  mouseEventHandler(e, 'keyup');
 });
