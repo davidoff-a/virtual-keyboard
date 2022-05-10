@@ -1,26 +1,8 @@
-@import "abstracts/variables";
-@import "abstracts/mixins";
-
-// @import "vendors/bootstrap";
-
+@import "base/normalize";
 @import "base/reset";
-@import "~normalize.css";
 @import "base/typography";
 
-// @import "layout/navigation";
-// @import "layout/grid";
-// @import "layout/header";
-// @import "layout/footer";
-// @import "layout/sidebar";
-// @import "layout/forms";
-
-// @import "components/buttons";
-// @import "components/carousel";
-// @import "components/cover";
-// @import "components/dropdown";
+@import "components/table";
+@import "components/keyBtn";
 
 @import "pages/home";
-// @import 'pages/contact';
-
-// @import 'themes/theme';
-// @import 'themes/admin';

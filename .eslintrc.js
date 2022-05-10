@@ -1,15 +1,19 @@
 module.exports = {
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: 'module',
+  },
   env: {
     browser: true,
-    es2022: true,
+    es6: true,
   },
-  extends: ['eslint:recommended', 'airbnb-base', 'prettier'],
+  extends: ['airbnb', 'plugin:prettier/recommended'],
 
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': ['error'],
-    'no-plusplus': 'off',
-    'no-console': 'warn',
+    'no-plusplus': 'warn',
+    'no-console': 0,
     'max-len': ['warn', { code: 120 }],
     indent: [
       'warn',
