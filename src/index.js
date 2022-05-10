@@ -63,14 +63,14 @@ window.addEventListener('focus', () => {
 
 const tablo = document.querySelector('.textOut');
 
-document.addEventListener('keydown', (e) => {
+function handleKeyDown(e) {
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
   if (keysLayout.some((unit) => unit.code === e.code)) {
     if (e.code === 'Tab') {
       if (tablo) {
-        tablo.value += '  ';
         tablo.focus();
+        tablo.value += '  ';
       }
       e.preventDefault();
     }
@@ -93,22 +93,22 @@ document.addEventListener('keydown', (e) => {
     }
     if (association[e.code] !== undefined) {
       if (tablo) {
+        tablo.focus();
         tablo.textContent += association[e.code];
       }
     } else if (tablo) {
       tablo.textContent += e.key;
     }
 
-    choosen[0].classList.add('active');
+    choosen[0].classList.add('active', 'keyAnimation');
   }
   if (e.altKey && e.shiftKey) {
-    console.log('layout changing');
     keysLayout = keysLayout === keysData.eng ? keysData.ru : keysData.eng;
     renderKeys(keysWrapper, keysLayout);
   }
-});
+}
 
-document.addEventListener('keyup', (e) => {
+function handleKeyUp(e) {
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
   if (keysLayout.some((unit) => unit.code === e.code)) {
@@ -121,6 +121,32 @@ document.addEventListener('keyup', (e) => {
           capsMode && btn.classList.contains('letter') ? keyToChange[0].label.toUpperCase() : keyToChange[0].label;
       });
     }
-    choosen[0].classList.remove('active');
+    choosen[0].classList.remove('active', 'keyAnimation');
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  handleKeyDown(e);
+});
+
+document.addEventListener('keyup', (e) => {
+  handleKeyUp(e);
+});
+
+document.addEventListener('mousedown', (e) => {
+  const { target } = e;
+  if (target && target.classList.contains('button')) {
+    const eCode = target.getAttribute('data-code');
+    const eKey = keysLayout.filter((item) => item.code === eCode)[0].label;
+    handleKeyDown(new KeyboardEvent('keydown', { code: eCode, key: eKey }));
+  }
+});
+
+document.addEventListener('mouseup', (e) => {
+  const { target } = e;
+  if (target && target.classList.contains('button')) {
+    const eCode = target.getAttribute('data-code');
+    const eKey = keysLayout.filter((item) => item.code === eCode)[0].label;
+    handleKeyUp(new KeyboardEvent('keyup', { code: eCode, key: eKey }));
   }
 });

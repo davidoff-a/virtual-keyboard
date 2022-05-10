@@ -20,3 +20,20 @@
   row-gap: 10px;
   column-gap: 10px;
 }
+
+.keyAnimation {
+  animation-name: keyShape;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  animation-direction: alternate;
+  border: radius 50%;
+}
+
+@keyframes keyShape {
+  from {
+    border-radius: 0;
+  }
+  to {
+    border-radius: 50%;
+  }
+}
