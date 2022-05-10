@@ -44,7 +44,7 @@ const keyboard = () => {
 
 keyboard();
 
-const keysLayout = keysData.eng;
+let keysLayout = keysData.eng;
 const keysWrapper = document.querySelector('.keys-wrapper');
 renderKeys(keysWrapper, keysLayout);
 const association = {
@@ -103,6 +103,11 @@ document.addEventListener('keydown', (e) => {
     }
 
     choosen[0].classList.add('active');
+  }
+  if (e.altKey && e.shiftKey) {
+    console.log('layout changing');
+    keysLayout = keysLayout === keysData.eng ? keysData.ru : keysData.eng;
+    renderKeys(keysWrapper, keysLayout);
   }
 });
 
