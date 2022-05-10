@@ -56,7 +56,7 @@
     { "position": "46", "label": "c", "value": "", "optValue1": "C", "classes": ["letter"], "code": "KeyC" },
     { "position": "47", "label": "v", "value": "", "optValue1": "V", "classes": ["letter"], "code": "KeyV" },
     { "position": "48", "label": "b", "value": "", "optValue1": "B", "classes": ["letter"], "code": "KeyB" },
-    { "position": "48", "label": "n", "value": "", "optValue1": "N", "classes": ["letter"], "code": "KeyB" },
+    { "position": "48", "label": "n", "value": "", "optValue1": "N", "classes": ["letter"], "code": "KeyN" },
     { "position": "50", "label": "m", "value": "", "optValue1": "M", "classes": ["letter"], "code": "KeyM" },
     { "position": "51", "label": ",", "value": "", "optValue1": "<", "classes": ["letter"], "code": "Comma" },
     { "position": "52", "label": ".", "value": "", "optValue1": ">", "classes": ["letter"], "code": "Period" },

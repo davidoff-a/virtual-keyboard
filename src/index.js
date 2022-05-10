@@ -10,10 +10,21 @@ const createEl = (tagSelector, arrClasses, objAtribs) => {
   return tagEl;
 };
 
+let capsMode = false;
+
 const renderKeys = (targetEl, arrKeys) => {
+  targetEl.innerHTML = '';
   arrKeys.forEach((key) => {
     const el = createEl('div', ['button', ...key.classes], { 'data-code': key.code });
-    el.textContent = key.label;
+    if (key.optValue1) {
+      if (capsMode) {
+        el.textContent = key.label.toUpperCase();
+      }
+    } else {
+      el.textContent = key.label;
+    }
+    el.textContent =
+      capsMode && key.optValue1 ? (el.textContent = key.label.toUpperCase()) : (el.textContent = key.label);
     targetEl.append(el);
   });
 };
@@ -63,8 +74,18 @@ document.addEventListener('keydown', (e) => {
     [...buttons].forEach((btn) => {
       const keyCode = btn.getAttribute('data-code');
       const keyToChange = keysLayout.filter((key) => key.code === keyCode);
-      btn.textContent = keyToChange[0].optValue1 ? keyToChange[0].optValue1 : keyToChange[0].label;
+      if (keyToChange[0].optValue1) {
+        if (e.getModifierState('CapsLock') && keyToChange[0].label.toUpperCase() === keyToChange[0].optValue1) {
+          btn.textContent = keyToChange[0].label;
+        } else {
+          btn.textContent = keyToChange[0].optValue1;
+        }
+      }
     });
+  }
+  if (e.key === 'CapsLock') {
+    capsMode = !capsMode;
+    renderKeys(keysWrapper, keysLayout);
   }
   if (association[e.code] !== undefined) {
     console.log('#####: element outputs =>', association[e.code]);
@@ -86,7 +107,8 @@ document.addEventListener('keyup', (e) => {
     [...btns].forEach((btn) => {
       const keyCode = btn.getAttribute('data-code');
       const keyToChange = keysLayout.filter((key) => key.code === keyCode);
-      btn.textContent = keyToChange[0].label;
+      btn.textContent =
+        capsMode && btn.classList.contains('letter') ? keyToChange[0].label.toUpperCase() : keyToChange[0].label;
     });
   }
   choosen[0].classList.remove('active');
