@@ -66,7 +66,7 @@ const tablo = document.querySelector('.textOut');
 document.addEventListener('keydown', (e) => {
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
-  if (keysLayout[e.code]) {
+  if (keysLayout.some((unit) => unit.code === e.code)) {
     if (e.code === 'Tab') {
       if (tablo) {
         tablo.value += '  ';
@@ -111,7 +111,7 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('keyup', (e) => {
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
-  if (keysLayout[e.code]) {
+  if (keysLayout.some((unit) => unit.code === e.code)) {
     if (e.key === 'Shift') {
       const btns = document.querySelectorAll('.button');
       [...btns].forEach((btn) => {
