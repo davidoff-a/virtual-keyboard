@@ -10,10 +10,13 @@ const createEl = (tagSelector, arrClasses, objAtribs) => {
   return tagEl;
 };
 
-let capsMode = false;
+let capsMode;
 
 const renderKeys = (targetEl, arrKeys) => {
   targetEl.innerHTML = '';
+  // if (e) {
+  //   capsMode = e.getModifierState('CapsLock');
+  // }
   arrKeys.forEach((key) => {
     const el = createEl('div', ['button', ...key.classes], { 'data-code': key.code });
     if (key.optValue1) {
@@ -57,59 +60,65 @@ const association = {
   MetaRight: '',
 };
 
+window.addEventListener('focus', () => {
+  renderKeys(keysWrapper, keysLayout);
+});
+
 const tablo = document.querySelector('.textOut');
 
 document.addEventListener('keydown', (e) => {
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
-
-  if (e.code === 'Tab') {
-    if (tablo) {
-      tablo.value += '  ';
-      tablo.focus();
-    }
-    e.preventDefault();
-  }
-  if (e.key === 'Shift') {
-    [...buttons].forEach((btn) => {
-      const keyCode = btn.getAttribute('data-code');
-      const keyToChange = keysLayout.filter((key) => key.code === keyCode);
-      if (keyToChange[0].optValue1) {
-        if (e.getModifierState('CapsLock') && keyToChange[0].label.toUpperCase() === keyToChange[0].optValue1) {
-          btn.textContent = keyToChange[0].label;
-        } else {
-          btn.textContent = keyToChange[0].optValue1;
-        }
+  if (keysLayout[e.code]) {
+    if (e.code === 'Tab') {
+      if (tablo) {
+        tablo.value += '  ';
+        tablo.focus();
       }
-    });
-  }
-  if (e.key === 'CapsLock') {
-    capsMode = !capsMode;
-    renderKeys(keysWrapper, keysLayout);
-  }
-  if (association[e.code] !== undefined) {
-    console.log('#####: element outputs =>', association[e.code]);
-    if (tablo) {
-      tablo.textContent += association[e.code];
+      e.preventDefault();
     }
-  } else if (tablo) {
-    tablo.textContent += e.key;
-  }
+    if (e.key === 'Shift') {
+      [...buttons].forEach((btn) => {
+        const keyCode = btn.getAttribute('data-code');
+        const keyToChange = keysLayout.filter((key) => key.code === keyCode);
+        if (keyToChange[0].optValue1) {
+          if (e.getModifierState('CapsLock') && keyToChange[0].label.toUpperCase() === keyToChange[0].optValue1) {
+            btn.textContent = keyToChange[0].label;
+          } else {
+            btn.textContent = keyToChange[0].optValue1;
+          }
+        }
+      });
+    }
+    if (e.key === 'CapsLock') {
+      capsMode = !capsMode;
+      renderKeys(keysWrapper, keysLayout);
+    }
+    if (association[e.code] !== undefined) {
+      if (tablo) {
+        tablo.textContent += association[e.code];
+      }
+    } else if (tablo) {
+      tablo.textContent += e.key;
+    }
 
-  choosen[0].classList.add('active');
+    choosen[0].classList.add('active');
+  }
 });
 
 document.addEventListener('keyup', (e) => {
   const buttons = document.querySelectorAll('.button');
   const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
-  if (e.key === 'Shift') {
-    const btns = document.querySelectorAll('.button');
-    [...btns].forEach((btn) => {
-      const keyCode = btn.getAttribute('data-code');
-      const keyToChange = keysLayout.filter((key) => key.code === keyCode);
-      btn.textContent =
-        capsMode && btn.classList.contains('letter') ? keyToChange[0].label.toUpperCase() : keyToChange[0].label;
-    });
+  if (keysLayout[e.code]) {
+    if (e.key === 'Shift') {
+      const btns = document.querySelectorAll('.button');
+      [...btns].forEach((btn) => {
+        const keyCode = btn.getAttribute('data-code');
+        const keyToChange = keysLayout.filter((key) => key.code === keyCode);
+        btn.textContent =
+          capsMode && btn.classList.contains('letter') ? keyToChange[0].label.toUpperCase() : keyToChange[0].label;
+      });
+    }
+    choosen[0].classList.remove('active');
   }
-  choosen[0].classList.remove('active');
 });
