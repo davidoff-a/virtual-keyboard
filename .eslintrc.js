@@ -30,5 +30,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['*config.js'],
+  ignorePatterns: ['*config.js', '*json'],
 };

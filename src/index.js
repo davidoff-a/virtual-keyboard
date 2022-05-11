@@ -108,7 +108,7 @@ function handleKeyUp(e) {
 
 document.addEventListener('keydown', (e) => {
   tablo.focus();
-  if (e.key === 'Shift') {
+  if (e.shiftKey) {
     console.log(board.capsMode);
     board.capsMode = !board.capsMode;
     console.log('#### capsMode after Shift', board.capsMode);
