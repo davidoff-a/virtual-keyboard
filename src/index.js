@@ -12,62 +12,11 @@ window.addEventListener('focus', () => {
 
 const tablo = document.querySelector('.textOut');
 
-// function handleShiftNCaps(e, el, key) {
-//   if (key.label.toUpperCase() === key.optValue1) {
-//     if (board.capsMode) {
-//       el.value = key.optValue1;
-//     } else {
-//       el.value = key.label;
-//     }
-//   }
-//   if (key.label.toUpperCase() !== key.optValue1 && key.label.toUpperCase() !== '' && e.shiftKey) {
-//     el.value = key.optValue1;
-//   } else {
-//     el.value = key.label;
-//   }
-// if (e.shiftKey && e.getModifierState('CapsLock')) {
-//   if (key.label.toUpperCase() === key.optValue1) {
-//     el.textContent = key.label;
-//   } else {
-//     el.textContent = key.optValue1;
-//   }
-// }
-// if (!e.shiftKey && e.getModifierState('CapsLock')) {
-//   if (key.label.toUpperCase() === key.optValue1) {
-//     el.textContent = key.optValue1;
-//   } else {
-//     el.textContent = key.label;
-//   }
-// }
-// if (e.shiftKey && !e.getModifierState('CapsLock')) {
-//   if (!el.classList.contains('special')) {
-//     el.textContent = key.optValue1;
-//   } else {
-//     el.textContent = key.label;
-//   }
-// }
-// }
-
-// function handleTabKey(e) {
-//   if (e.code === 'Tab') {
-//     if (tablo) {
-//       tablo.value += '    ';
-//       tablo.focus();
-//     }
-//     e.preventDefault();
-//   }
-// }
-
-// function handleAltNShift(e) {
-//   if (e.altKey && e.shiftKey) {
-//     board.curLayout = board.curLayout === keysData.eng ? keysData.ru : keysData.eng;
-//     window.localStorage.setItem('language', JSON.stringify(board.curLayout));
-//     board.renderKeys(keysWrapper);
-//   }
-// }
-
-const highlightBtn = () => {
-  console.log(board.curLayout);
+const highlightBtn = (keyCode) => {
+  const buttons = document.querySelectorAll('.button');
+  const pressedBtn = [...buttons].filter((btn) => btn.getAttribute('data-code') === keyCode)[0];
+  pressedBtn.classList.add('active', 'keyAnimation');
+  // console.log(board.curLayout);
 };
 
 function handleKeyDown(e) {
@@ -150,3 +99,57 @@ document.addEventListener('mouseup', (e) => {
     handleKeyUp(new KeyboardEvent('keyup', { code: eCode, key: eKey }));
   }
 });
+
+// function handleShiftNCaps(e, el, key) {
+//   if (key.label.toUpperCase() === key.optValue1) {
+//     if (board.capsMode) {
+//       el.value = key.optValue1;
+//     } else {
+//       el.value = key.label;
+//     }
+//   }
+//   if (key.label.toUpperCase() !== key.optValue1 && key.label.toUpperCase() !== '' && e.shiftKey) {
+//     el.value = key.optValue1;
+//   } else {
+//     el.value = key.label;
+//   }
+// if (e.shiftKey && e.getModifierState('CapsLock')) {
+//   if (key.label.toUpperCase() === key.optValue1) {
+//     el.textContent = key.label;
+//   } else {
+//     el.textContent = key.optValue1;
+//   }
+// }
+// if (!e.shiftKey && e.getModifierState('CapsLock')) {
+//   if (key.label.toUpperCase() === key.optValue1) {
+//     el.textContent = key.optValue1;
+//   } else {
+//     el.textContent = key.label;
+//   }
+// }
+// if (e.shiftKey && !e.getModifierState('CapsLock')) {
+//   if (!el.classList.contains('special')) {
+//     el.textContent = key.optValue1;
+//   } else {
+//     el.textContent = key.label;
+//   }
+// }
+// }
+
+// function handleTabKey(e) {
+//   if (e.code === 'Tab') {
+//     if (tablo) {
+//       tablo.value += '    ';
+//       tablo.focus();
+//     }
+//     e.preventDefault();
+//   }
+// }
+
+// function handleAltNShift(e) {
+//   if (e.altKey && e.shiftKey) {
+//     board.curLayout = board.curLayout === keysData.eng ? keysData.ru : keysData.eng;
+//     window.localStorage.setItem('language', JSON.stringify(board.curLayout));
+//     board.renderKeys(keysWrapper);
+//   }
+// }
