@@ -4,6 +4,7 @@ class Keyboard {
   constructor(jsonData) {
     this.jsonData = jsonData;
     this.capsMode = false;
+    this.shiftMode = false;
     this.curLayout = this.getCurLayout();
     // this.curLayoutIdx = Array.isArray(this.jsonData) ? this.jsonData.length : 0;
   }
