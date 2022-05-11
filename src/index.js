@@ -7,7 +7,9 @@ let capsMode;
 const renderKeys = (targetEl, arrKeys) => {
   targetEl.innerHTML = '';
   arrKeys.forEach((key) => {
-    const el = createEl('div', ['button', ...key.classes], { 'data-code': key.code });
+    const el = createEl('div', ['button', ...key.classes], {
+      'data-code': key.code,
+    });
     if (key.optValue1) {
       if (capsMode) {
         el.textContent = key.label.toUpperCase();
@@ -22,70 +24,94 @@ const renderKeys = (targetEl, arrKeys) => {
 };
 
 keyboard();
+
 const language = window.localStorage.getItem('language');
-console.table(language);
 let keysLayout = JSON.parse(language) || keysData.eng;
-console.log(keysLayout);
+
 const keysWrapper = document.querySelector('.keys-wrapper');
 renderKeys(keysWrapper, keysLayout);
 
-const association = {
-  Tab: '   ',
-  CapsLock: '',
-  ShiftRight: '',
-  ShiftLeft: '',
-  ControlRight: '',
-  ControlLeft: '',
-  AltRight: '',
-  AltLeft: '',
-  MetaLeft: '',
-  MetaRight: '',
-};
+// const association = {
+//   Tab: '   ',
+//   CapsLock: '',
+//   ShiftRight: '',
+//   ShiftLeft: '',
+//   ControlRight: '',
+//   ControlLeft: '',
+//   AltRight: '',
+//   AltLeft: '',
+//   MetaLeft: '',
+//   MetaRight: '',
+// };
 
 window.addEventListener('focus', () => {
   renderKeys(keysWrapper, keysLayout);
 });
 
 const tablo = document.querySelector('.textOut');
+const buttons = document.querySelectorAll('.button');
+const chooseBtn = (keyCode) => [...buttons].filter((btn) => btn.getAttribute('data-code') === keyCode);
+let caseBtn = false;
 
 function handleKeyDown(e) {
-  const buttons = document.querySelectorAll('.button');
-  const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
-  if (keysLayout.some((unit) => unit.code === e.code)) {
-    if (e.code === 'Tab') {
-      if (tablo) {
-        tablo.focus();
-        tablo.value += '  ';
-      }
-      e.preventDefault();
+  const { code } = e;
+  if (keysLayout.some((unit) => unit.code === code)) {
+    // const keyPressedData = keysLayout.filter((keyBtn) => keyBtn.code === code)[0];
+    if ((e.shiftKey && e.getModifierState('CapsLock')) || (!e.shiftKey && !e.getModifierState('CapsLock'))) {
+      caseBtn = false;
     }
-    if (e.key === 'Shift') {
-      [...buttons].forEach((btn) => {
-        const keyCode = btn.getAttribute('data-code');
-        const keyToChange = keysLayout.filter((key) => key.code === keyCode);
-        if (keyToChange[0].optValue1) {
-          if (e.getModifierState('CapsLock') && keyToChange[0].label.toUpperCase() === keyToChange[0].optValue1) {
-            btn.textContent = keyToChange[0].label;
-          } else {
-            btn.textContent = keyToChange[0].optValue1;
-          }
+    if (e.shiftKey ^ e.getModifierState('CapsLock')) {
+      caseBtn = true;
+    }
+    [...buttons].forEach((btn) => {
+      if (btn.classList.contains('letter')) {
+        if (caseBtn) {
+          btn.value = btn.value.toUpperCase();
+        } else {
+          btn.value = btn.value.toLowerCase();
         }
-      });
-    }
-    if (e.key === 'CapsLock') {
-      capsMode = !capsMode;
-      renderKeys(keysWrapper, keysLayout);
-    }
-    if (association[e.code] !== undefined) {
-      if (tablo) {
-        tablo.focus();
-        tablo.textContent += association[e.code];
       }
-    } else if (tablo) {
-      tablo.textContent += e.key;
-    }
+    });
+    // if (e.shiftKey) {
+    //   caseBtn = !caseBtn;
+    // }
+    // if (e.getModifierState('CapsLock')) {
+    //   caseBtn = true;
+    // }
 
-    choosen[0].classList.add('active', 'keyAnimation');
+    // if (code === 'Tab') {
+    //   if (tablo) {
+    //     tablo.focus();
+    //     tablo.value += `\t`;
+    //   }
+    //   e.preventDefault();
+    // }
+    // if (key === 'Shift') {
+    //   [...buttons].forEach((btn) => {
+    //     const keyToChange = keysLayout.filter((item) => item.code === btn.getAttribute('data-code'));
+    //     if (keyToChange[0].optValue1) {
+    //       if (e.getModifierState('CapsLock') && keyToChange[0].label.toUpperCase() === keyToChange[0].optValue1) {
+    //         btn.textContent = keyToChange[0].label;
+    //       } else {
+    //         btn.textContent = keyToChange[0].optValue1;
+    //       }
+    //     }
+    //   });
+    // }
+    // if (e.key === 'CapsLock') {
+    //   capsMode = !capsMode;
+    //   renderKeys(keysWrapper, keysLayout);
+    // }
+    // if (association[e.code] !== undefined) {
+    //   if (tablo) {
+    //     tablo.focus();
+    //     tablo.textContent += association[e.code];
+    //   }
+    // } else if (tablo) {
+    //   tablo.textContent += key;
+    // }
+
+    chooseBtn(code)[0].classList.add('active', 'keyAnimation');
   }
   if (e.altKey && e.shiftKey) {
     keysLayout = keysLayout === keysData.eng ? keysData.ru : keysData.eng;
@@ -94,49 +120,45 @@ function handleKeyDown(e) {
   }
 }
 
-function handleKeyUp(e) {
-  const buttons = document.querySelectorAll('.button');
-  const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
-  if (keysLayout.some((unit) => unit.code === e.code)) {
-    if (e.key === 'Shift') {
-      const btns = document.querySelectorAll('.button');
-      [...btns].forEach((btn) => {
-        const keyCode = btn.getAttribute('data-code');
-        const keyToChange = keysLayout.filter((key) => key.code === keyCode);
-        btn.textContent =
-          capsMode && btn.classList.contains('letter') ? keyToChange[0].label.toUpperCase() : keyToChange[0].label;
-      });
-    }
-    choosen[0].classList.remove('active', 'keyAnimation');
-  }
-}
+// function handleKeyUp(e) {
+//   // const choosen = [...buttons].filter((btn) => btn.getAttribute('data-code') === e.code);
+//   if (keysLayout.some((unit) => unit.code === e.code)) {
+//     if (e.key === 'Shift') {
+//       const btns = document.querySelectorAll('.button');
+//       [...btns].forEach((btn) => {
+//         const keyCode = btn.getAttribute('data-code');
+//         const keyToChange = keysLayout.filter((key) => key.code === keyCode);
+//         btn.textContent =
+//           capsMode && btn.classList.contains('letter') ? keyToChange[0].label.toUpperCase() : keyToChange[0].label;
+//       });
+//     }
+//     choosen[0].classList.remove('active', 'keyAnimation');
+//   }
+// }
 
 document.addEventListener('keydown', (e) => {
   handleKeyDown(e);
 });
 
-document.addEventListener('keyup', (e) => {
-  handleKeyUp(e);
-});
+// document.addEventListener('keyup', (e) => {
+//   handleKeyUp(e);
+// });
 
-const mouseEventHandler = (e, eventType) => {
-  const { target } = e;
+const mouseEventHandler = ({ target, type }) => {
   if (target && target.classList.contains('button')) {
     const eCode = target.getAttribute('data-code');
     const eKey = keysLayout.filter((item) => item.code === eCode)[0].label;
-    handleKeyDown(new KeyboardEvent(`${eventType}`, { code: eCode, key: eKey }));
+    handleKeyDown(
+      new KeyboardEvent(type === 'mousedown' ? 'keydown' : 'keyup', {
+        code: eCode,
+        key: eKey,
+      })
+    );
   }
 };
 document.addEventListener('mousedown', (e) => {
-  mouseEventHandler(e, 'keydown');
+  mouseEventHandler(e);
 });
-// TODO: method mouseup doesn't work. It works like method keydown
 document.addEventListener('mouseup', (e) => {
-  // const { target } = e;
-  // if (target && target.classList.contains('button')) {
-  //   const eCode = target.getAttribute('data-code');
-  //   const eKey = keysLayout.filter((item) => item.code === eCode)[0].label;
-  //   handleKeyUp(new KeyboardEvent('keyup', { code: eCode, key: eKey }));
-  // }
-  mouseEventHandler(e, 'keyup');
+  mouseEventHandler(e);
 });
