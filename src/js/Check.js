@@ -41,13 +41,13 @@ class Keyboard {
 
   getCurLayout() {
     const language = window.localStorage.getItem('language');
-    // const layouts = Object.keys(jsonData);
-    const keysLayout = JSON.parse(language) || keysData[this.curLayout];
+    const keysLayout = JSON.parse(language) || this.jsonData.eng;
     return keysLayout;
   }
 
   renderKeys(targetEl) {
     targetEl.innerHTML = '';
+    console.log(this.curLayout);
     this.curLayout.forEach((key) => {
       const el = Keyboard.createEl('div', ['button', ...key.classes], { 'data-code': key.code });
       if (key.optValue1) {
