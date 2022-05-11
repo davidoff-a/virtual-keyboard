@@ -163,7 +163,7 @@
     { "label": "б", "value": "", "optValue1": "Б", "classes": ["letter"], "code": "Comma" },
     { "label": "ю", "value": "", "optValue1": "Ю", "classes": ["letter"], "code": "Period" },
     { "label": ".", "value": "", "optValue1": ",", "classes": ["letter"], "code": "Slash" },
-    { "label": "", "optValue1": "~", "classes": ["arrow", "arrow-up"], "code": "ArrowUp" },
+    { "label": "", "optValue1": "", "classes": ["arrow", "arrow-up"], "code": "ArrowUp" },
     { "label": "Shift", "value": "", "optValue1": "", "classes": ["special"], "code": "ShiftRight" },
     { "label": "Ctrl", "value": "", "optValue1": "", "classes": ["special"], "code": "ControlLeft" },
     { "label": "Win", "value": "", "optValue1": "", "classes": ["special"], "code": "MetaLeft" },
