@@ -44,11 +44,11 @@ class Keyboard {
     const language = window.localStorage.getItem('language');
     const layoutArr = Object.keys(this.jsonData);
     const keysLayout = language ? JSON.parse(language) : this.jsonData[layoutArr[this.curLayoutIdx]];
-    console.log('#### layout arr=>', layoutArr);
-    console.log('#### layout idx=>', this.curLayoutIdx);
-    console.log('#### layout =>', layoutArr[this.curLayoutIdx]);
-    console.log('#### layout =>', this.jsonData[layoutArr[this.curLayoutIdx]]);
-    console.log('#### cur layout =>', this.curLayout);
+    // console.log('#### layout arr=>', layoutArr);
+    // console.log('#### layout idx=>', this.curLayoutIdx);
+    // console.log('#### layout =>', layoutArr[this.curLayoutIdx]);
+    // console.log('#### layout =>', this.jsonData[layoutArr[this.curLayoutIdx]]);
+    // console.log('#### cur layout =>', this.curLayout);
     return keysLayout;
   }
 

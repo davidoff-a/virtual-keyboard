@@ -32,10 +32,21 @@ const updateKeys = () => {
 document.addEventListener('keydown', (e) => {
   e.preventDefault();
   tablo.focus();
-  tablo.value += document.querySelector(`#${e.code}`).innerText;
+  const curKey = document.querySelector(`#${e.code}`);
+
+  if (!curKey.classList.contains('special') && !curKey.classList.contains('special-letter')) {
+    tablo.value += curKey.innerText;
+  }
+
   highlightBtn(e.code);
   if (e.code === 'CapsLock') {
     board.capsMode = !board.capsMode;
+  }
+  if (e.code === 'Enter') {
+    tablo.value += '\n';
+  }
+  if (e.code === 'Space') {
+    tablo.value += ' ';
   }
   if (e.shiftKey) {
     board.capsMode = !board.capsMode;
@@ -45,12 +56,8 @@ document.addEventListener('keydown', (e) => {
     tablo.focus();
     tablo.value += '\t';
   }
-  if (e.key === 'Alt') {
-    // e.preventDefault();
-  }
 
   if (e.ctrlKey && e.altKey) {
-    // e.preventDefault();
     const lastLayoutIdx = Object.keys(board.jsonData).length - 1;
     board.curLayoutIdx = board.curLayoutIdx < lastLayoutIdx ? (board.curLayoutIdx += 1) : 0;
     board.curLayout = board.getLayout();
