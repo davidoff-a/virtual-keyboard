@@ -5,8 +5,8 @@ class Keyboard {
     this.jsonData = jsonData;
     this.capsMode = false;
     this.shiftMode = false;
-    this.curLayout = this.getCurLayout();
-    // this.curLayoutIdx = Array.isArray(this.jsonData) ? this.jsonData.length : 0;
+    this.curLayoutIdx = 0;
+    this.curLayout = this.getLayout();
   }
 
   static createEl(tagSelector, arrClasses, objAtribs) {
@@ -25,7 +25,7 @@ class Keyboard {
     const keyWrapper = this.createEl('div', ['keys-wrapper', 'row'], {});
     const legend = this.createEl('div', ['legend'], {});
     const legend2 = this.createEl('div', ['legend'], {});
-    legend.innerHTML = `<code>Shift</code> + <code>Alt</code> - press for switching layout`;
+    legend.innerHTML = `<code>Ctrl</code> + <code>Alt</code> - press for switching layout`;
     legend2.textContent = `Keyboard developed in Windows`;
     container.append(keyTable);
     container.append(keyWrapper);
@@ -40,15 +40,21 @@ class Keyboard {
     this.renderKeys(targetEl);
   }
 
-  getCurLayout() {
+  getLayout() {
     const language = window.localStorage.getItem('language');
-    const keysLayout = JSON.parse(language) || this.jsonData.eng;
+    const layoutArr = Object.keys(this.jsonData);
+    const keysLayout = language ? JSON.parse(language) : this.jsonData[layoutArr[this.curLayoutIdx]];
+    console.log('#### layout arr=>', layoutArr);
+    console.log('#### layout idx=>', this.curLayoutIdx);
+    console.log('#### layout =>', layoutArr[this.curLayoutIdx]);
+    console.log('#### layout =>', this.jsonData[layoutArr[this.curLayoutIdx]]);
+    console.log('#### cur layout =>', this.curLayout);
     return keysLayout;
   }
 
   renderKeys(targetEl) {
     targetEl.innerHTML = '';
-    this.curLayout.forEach((key) => {
+    this.getLayout().forEach((key) => {
       const el = Keyboard.createEl('div', ['button', ...key.classes], { id: key.code });
       if (key.optValue1) {
         if (key.label.toUpperCase() === key.optValue1) {
