@@ -49,23 +49,24 @@ class Keyboard {
   renderKeys(targetEl) {
     targetEl.innerHTML = '';
     this.curLayout.forEach((key) => {
-      const el = Keyboard.createEl('div', ['button', ...key.classes], { 'data-code': key.code });
+      const el = Keyboard.createEl('div', ['button', ...key.classes], { id: key.code });
       if (key.optValue1) {
         if (key.label.toUpperCase() === key.optValue1) {
           if (this.capsMode) {
-            el.value = key.optValue1;
+            el.textContent = key.optValue1;
           } else {
-            el.value = key.label;
+            el.textContent = key.label;
           }
         } else if (this.shiftMode) {
-          el.value = key.optValue1;
+          el.textContent = key.optValue1;
         } else {
-          el.value = key.label;
+          el.textContent = key.label;
         }
       } else {
-        el.value = key.label;
+        el.textContent = key.label;
       }
-      el.value = this.capsMode && key.optValue1 ? (el.value = key.label.toUpperCase()) : (el.value = key.label);
+      el.textContent =
+        this.capsMode && key.optValue1 ? (el.textContent = key.label.toUpperCase()) : (el.textContent = key.label);
       targetEl.append(el);
     });
   }

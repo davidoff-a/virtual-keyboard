@@ -4,38 +4,61 @@ import { board } from './js/Check';
 
 board.init('.keys-wrapper');
 
-const keysWrapper = document.querySelector('.keys-wrapper');
+// const keysWrapper = document.querySelector('.keys-wrapper');
 
-window.addEventListener('focus', () => {
-  board.renderKeys(keysWrapper);
-});
+// window.addEventListener('focus', () => {
+//   board.renderKeys(keysWrapper);
+// });
 
 const tablo = document.querySelector('.textOut');
 
 const highlightBtn = (keyCode) => {
   const buttons = document.querySelectorAll('.button');
-  const pressedBtn = [...buttons].filter((btn) => btn.getAttribute('data-code') === keyCode)[0];
+  const pressedBtn = [...buttons].find((btn) => {
+    return btn.getAttribute('id') === keyCode;
+  });
   pressedBtn.classList.add('active', 'keyAnimation');
+};
+
+// const isCapsOn = (e) => {
+//   return e.getModifierState('CapsLock');
+// };
+
+const updateKeys = () => {
+  board.curLayout.forEach((key) => {
+    if (key.optValue1) {
+      const btnToUpdate = document.querySelector(`#${key.code}`);
+
+      if (key.label.toUpperCase() === key.optValue1) {
+        btnToUpdate.innerText = board.capsMode ? key.optValue1 : key.label;
+      }
+      if (key.label.toUpperCase() !== key.optValue1) {
+        btnToUpdate.innerText = board.shiftMode ? key.optValue1 : key.label;
+      }
+    }
+  });
 };
 
 document.addEventListener('keydown', (e) => {
   tablo.focus();
   highlightBtn(e.code);
-  board.renderKeys(keysWrapper);
-  // handleKeyDown(e);
+  if (e.code === 'CapsLock') {
+    board.capsMode = !board.capsMode;
+  }
+  if (e.shiftKey) {
+    board.capsMode = !board.capsMode;
+    board.shiftMode = !board.shiftMode;
+  }
+  if (e.code === 'Tab') {
+    e.preventDefault();
+    tablo.focus();
+    tablo.value += '\t';
+  }
+  if (e.key === 'Alt') {
+    e.preventDefault();
+  }
+  updateKeys();
 });
-
-// if (e.shiftKey) {
-//   console.log(board.capsMode);
-//   board.capsMode = !board.capsMode;
-//   console.log('#### capsMode after Shift', board.capsMode);
-// }
-// if (e.code === 'CapsLock') {
-//   console.log(e.code);
-//   board.capsMode = !board.capsMode;
-//   console.log('#### capsMode after CapsLock', board.capsMode);
-// }
-// handleKeyDown(e);
 
 // document.addEventListener('keyup', (e) => {
 //   handleKeyUp(e);
