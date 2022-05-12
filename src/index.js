@@ -56,6 +56,18 @@ document.addEventListener('keydown', (e) => {
     tablo.focus();
     tablo.value += '\t';
   }
+  if (e.code === 'ArrowLeft') {
+    tablo.value += '←';
+  }
+  if (e.code === 'ArrowRight') {
+    tablo.value += '→';
+  }
+  if (e.code === 'ArrowUp') {
+    tablo.value += '↑';
+  }
+  if (e.code === 'ArrowDown') {
+    tablo.value += '↓';
+  }
 
   if (e.ctrlKey && e.altKey) {
     const lastLayoutIdx = Object.keys(board.jsonData).length - 1;
@@ -77,9 +89,7 @@ document.addEventListener('keyup', (e) => {
     document.querySelector('#ControlLeft').classList.remove('active');
     document.querySelector('#ControlLeft').classList.remove('keyAnimaion');
   }
-  if (e.key === 'Ctrl' || e.key === 'Alt') {
-    document.querySelector('#ControlLeft').classList.remove('active');
-    document.querySelector('#ControlLeft').classList.remove('keyAnimaion');
+  if (e.code() === 'Alt') {
     document.querySelector('#AltLeft').classList.remove('active');
     document.querySelector('#AltLeft').classList.remove('keyAnimaion');
   }
@@ -87,12 +97,12 @@ document.addEventListener('keyup', (e) => {
   updateKeys();
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  window.addEventListener('focus', (e) => {
-    board.capsMode = e.getModifierState('CapsLock');
-    updateKeys();
-  });
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//   window.addEventListener('focus', (e) => {
+//     board.capsMode = e.getModifierState('CapsLock');
+//     updateKeys();
+//   });
+// });
 
 // const mouseEventHandler = (e, eventType) => {
 //   const { target } = e;
