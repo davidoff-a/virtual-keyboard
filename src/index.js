@@ -30,7 +30,9 @@ const updateKeys = () => {
 };
 
 document.addEventListener('keydown', (e) => {
+  e.preventDefault();
   tablo.focus();
+  tablo.value += document.querySelector(`#${e.code}`).innerText;
   highlightBtn(e.code);
   if (e.code === 'CapsLock') {
     board.capsMode = !board.capsMode;
@@ -40,21 +42,21 @@ document.addEventListener('keydown', (e) => {
     board.shiftMode = !board.shiftMode;
   }
   if (e.code === 'Tab') {
-    e.preventDefault();
     tablo.focus();
     tablo.value += '\t';
   }
   if (e.key === 'Alt') {
-    e.preventDefault();
+    // e.preventDefault();
   }
 
   if (e.ctrlKey && e.altKey) {
-    e.preventDefault();
+    // e.preventDefault();
     const lastLayoutIdx = Object.keys(board.jsonData).length - 1;
     board.curLayoutIdx = board.curLayoutIdx < lastLayoutIdx ? (board.curLayoutIdx += 1) : 0;
     board.curLayout = board.getLayout();
     board.renderKeys(document.querySelector('.keys-wrapper'));
   }
+
   updateKeys();
 });
 
