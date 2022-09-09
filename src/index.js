@@ -1,33 +1,10 @@
 import './scss/main.scss';
 import { board } from './js/Check';
+import { highlightBtn, updateKeys } from './js/key';
 
 board.init('.keys-wrapper');
 
 const tablo = document.querySelector('.textOut');
-
-const highlightBtn = (keyCode) => {
-  const buttons = document.querySelectorAll('.button');
-  const pressedBtn = [...buttons].find((btn) => {
-    return btn.getAttribute('id') === keyCode;
-  });
-  pressedBtn.classList.toggle('active');
-  pressedBtn.classList.toggle('keyAnimation');
-};
-
-const updateKeys = () => {
-  board.getLayout().forEach((key) => {
-    if (key.optValue1) {
-      const btnToUpdate = document.querySelector(`#${key.code}`);
-
-      if (key.label.toUpperCase() === key.optValue1) {
-        btnToUpdate.innerText = board.capsMode ? key.optValue1 : key.label;
-      }
-      if (key.label.toUpperCase() !== key.optValue1) {
-        btnToUpdate.innerText = board.shiftMode ? key.optValue1 : key.label;
-      }
-    }
-  });
-};
 
 document.addEventListener('keydown', (e) => {
   e.preventDefault();
@@ -39,6 +16,7 @@ document.addEventListener('keydown', (e) => {
   }
 
   highlightBtn(e.code);
+
   if (e.code === 'CapsLock') {
     board.capsMode = !board.capsMode;
   }
@@ -81,15 +59,15 @@ document.addEventListener('keydown', (e) => {
 
 document.addEventListener('keyup', (e) => {
   highlightBtn(e.code);
-  if (e.key === 'Shift') {
-    board.capsMode = !board.capsMode;
-    board.shiftMode = !board.shiftMode;
-  }
   if (e.key === 'Ctrl') {
     document.querySelector('#ControlLeft').classList.remove('active');
     document.querySelector('#ControlLeft').classList.remove('keyAnimaion');
+    document.querySelector('#AltLeft').classList.remove('active');
+    document.querySelector('#AltLeft').classList.remove('keyAnimaion');
   }
-  if (e.code() === 'Alt') {
+  if (e.key() === 'Alt') {
+    document.querySelector('#AltLeft').classList.remove('active');
+    document.querySelector('#AltLeft').classList.remove('keyAnimaion');
     document.querySelector('#AltLeft').classList.remove('active');
     document.querySelector('#AltLeft').classList.remove('keyAnimaion');
   }
@@ -97,13 +75,24 @@ document.addEventListener('keyup', (e) => {
   updateKeys();
 });
 
-// document.addEventListener('DOMContentLoaded', () => {
-//   window.addEventListener('focus', (e) => {
-//     board.capsMode = e.getModifierState('CapsLock');
-//     updateKeys();
-//   });
-// });
+const keyWrapper = document.querySelector('.keys-wrapper');
+keyWrapper.addEventListener('mousedown', (e) => {
+  const { target } = e;
+  if (target && target.classList.contains('button')) {
+    const keyId = target.getAttribute('id');
+    highlightBtn(keyId);
+    tablo.value += target.innerText;
+  }
+});
 
+keyWrapper.addEventListener('mouseup', (e) => {
+  const { target } = e;
+  if (target && target.classList.contains('button')) {
+    const keyId = target.getAttribute('id');
+    highlightBtn(keyId);
+    tablo.value += target.innerText;
+  }
+});
 // const mouseEventHandler = (e, eventType) => {
 //   const { target } = e;
 //   if (target && target.classList.contains('button')) {
